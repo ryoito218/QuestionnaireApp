@@ -2,6 +2,10 @@
 
 ## 基本情報
 スライダを使ったアンケートを作成した．
+Pythonのみで作成したWebアプリケーションである．
 
-## ローカルでStreamlitのアプリを立ち上げる方法
+## ローカルでStreamlit (フロントエンド) を立ち上げる方法
 streamlit run app.py
+
+## ローカルでFastAPI (バックエンド) を立ち上げる方法
+uvicorn backend.main:app --reload
