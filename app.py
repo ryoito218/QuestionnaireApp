@@ -1,4 +1,6 @@
 import streamlit as st
+import requests
+import json
 
 st.title("アンケート")
 st.write("以下の項目に答えてください")
@@ -6,7 +8,7 @@ st.write("以下の項目に答えてください")
 with st.form(key="questionnaire"):
     st.header("基本情報")
     name = st.text_input("名前", max_chars=20)
-    age = st.number_input("年齢", min_value=12, max_value=120, step=1)
+    age = st.number_input("年齢", min_value=0, max_value=120, step=1)
     residence1 = st.text_input("生誕から12歳までの主だった居住地（県レベルまで）")
     residence2 = st.text_input("12歳から現在までの主だった居住地（県レベルまで）")
 
@@ -67,4 +69,47 @@ with st.form(key="questionnaire"):
     brand = st.text_area("3. ブランドがあることをしっていますか。知っていればそのブランドをお書きください。")
     comment = st.text_area("4. 自由に感想などをお書きください。")
 
+    data = {
+        "name": name,
+        "age": age,
+        "residence1": residence1,
+        "residence2": residence2,
+        "umamiA": umamiA,
+        "umamiB": umamiB,
+        "sweetA": sweetA,
+        "sweetB": sweetB,
+        "bitterA": bitterA,
+        "bitterB": bitterB,
+        "sourA": sourA,
+        "sourB": sourB,
+        "saltyA": saltyA,
+        "saltyB": saltyB,
+        "astringencyA": astringencyA,
+        "astringencyB": astringencyB,
+        "shakishakiA": shakishakiA,
+        "shakishakiB": shakishakiB,
+        "fuwafuwaA": fuwafuwaA,
+        "fuwafuwaB": fuwafuwaB,
+        "peelfirmnessA": peelfirmnessA,
+        "peelfirmnessB": peelfirmnessB,
+        "pulpfirmnessA": pulpfirmnessA,
+        "pulpfirmnessB": pulpfirmnessB,
+        "allergy": allergy,
+        "howtoeat": howtoeat,
+        "brand": brand,
+        "comment": comment,
+    }
+
     submit_button = st.form_submit_button(label="送信")
+
+if submit_button:
+    url = "http://127.0.0.1:8000/submit"
+    res = requests.post(
+        url,
+        data=json.dumps(data)
+    )
+    if res.status_code == 200:
+        st.success("送信完了")
+        st.json(res.json())
+    else:
+        st.error("送信失敗")
